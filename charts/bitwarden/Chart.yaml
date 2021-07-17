@@ -1,0 +1,11 @@
+apiVersion: v2
+appVersion: 1.41.4
+description: The Bitwarden password vault
+home: https://bitwarden.com
+icon: https://bitwarden.com/images/icons/favicon-32x32.png
+maintainers:
+- name: Brandon Moller
+  url: https://bmoller.github.io/bitwarden-helm/
+name: bitwarden
+type: application
+version: 1.0.0

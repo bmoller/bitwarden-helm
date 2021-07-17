@@ -1,0 +1,59 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  labels:
+    {{- list "common" . | include "bitwarden.labels.selector" | nindent 4 }}
+  name: bitwarden-overrides
+data:
+  adminSettings__admins: {{ join "," .Values.admins }}
+  globalSettings__attachment__baseDirectory: /etc/bitwarden/core/attachments
+  globalSettings__attachment__baseUrl: https://{{ .Values.domain }}/attachments
+  globalSettings__baseServiceUri__admin: https://{{ .Values.domain }}/admin
+  globalSettings__baseServiceUri__api: https://{{ .Values.domain }}/api
+  globalSettings__baseServiceUri__identity: https://{{ .Values.domain }}/identity
+  globalSettings__baseServiceUri__notifications: https://{{ .Values.domain }}/notifications
+  globalSettings__baseServiceUri__portal: https://{{ .Values.domain }}/portal
+  globalSettings__baseServiceUri__sso: https://{{ .Values.domain }}/sso
+  globalSettings__baseServiceUri__vault: https://{{ .Values.domain }}
+  globalSettings__dataProtection__directory: /etc/bitwarden/core/aspnet-dataprotection
+  globalSettings__disableUserRegistration: {{ .Values.disableUserRegistration | quote }}
+  globalSettings__licenseDirectory: /etc/bitwarden/core/licenses
+  globalSettings__logDirectory: /etc/bitwarden/logs
+  {{- if .Values.logRollBySizeLimit }}
+  globalSettings__logRollBySizeLimit: {{ .Values.logRollBySizeLimit | quote }}
+  {{- end }}
+  globalSettings__mail__replyToEmail: {{ .Values.mail.replyToEmail | quote }}
+  globalSettings__mail__smtp__host: {{ .Values.mail.host | quote }}
+  globalSettings__mail__smtp__port: {{ .Values.mail.port | quote }}
+  globalSettings__mail__smtp__ssl: {{ .Values.mail.ssl | quote }}
+  globalSettings__send__baseDirectory: /etc/bitwarden/core/attachments/send
+  globalSettings__send__baseUrl: https://{{ .Values.domain }}/attachments/send
+  {{- if .Values.syslogDestination }}
+  globalSettings__syslog__destination: {{ .Values.syslogDestination | quote }}
+  {{- end }}
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  labels:
+    {{- list "common" . | include "bitwarden.labels.selector" | nindent 4 }}
+  name: bitwarden-defaults
+data:
+  ASPNETCORE_ENVIRONMENT: Production
+  globalSettings__baseServiceUri__admin: http://localhost/admin
+  globalSettings__baseServiceUri__api: http://localhost/api
+  globalSettings__baseServiceUri__identity: http://localhost/identity
+  globalSettings__baseServiceUri__internalAdmin: http://bitwarden-admin:5000
+  globalSettings__baseServiceUri__internalApi: http://bitwarden-api:5000
+  globalSettings__baseServiceUri__internalIdentity: http://bitwarden-identity:5000
+  globalSettings__baseServiceUri__internalNotifications: http://bitwarden-notifications:5000
+  globalSettings__baseServiceUri__internalPortal: http://bitwarden-portal:5000
+  globalSettings__baseServiceUri__internalSso: http://bitwarden-sso:5000
+  globalSettings__baseServiceUri__internalVault: http://bitwarden-web:5000
+  globalSettings__baseServiceUri__notifications: http://localhost/notifications
+  globalSettings__baseServiceUri__portal: http://localhost/portal
+  globalSettings__baseServiceUri__sso: http://localhost/sso
+  globalSettings__baseServiceUri__vault: http://localhost
+  globalSettings__installation__identityUri: https://identity.bitwarden.com
+  globalSettings__pushRelayBaseUri: https://push.bitwarden.com
+  globalSettings__selfHosted: "true"

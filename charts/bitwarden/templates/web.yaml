@@ -1,0 +1,15 @@
+{{- $templateContext := list "web" . -}}
+
+{{ include "bitwarden.deployment" $templateContext }}
+---
+{{ include "bitwarden.service" $templateContext }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "bitwarden.labels.selector" $templateContext | nindent 4 }}
+  name: bitwarden-web
+data:
+  app-id.json: |
+    {{- tpl (.Files.Get "files/app-id.json.tpl") . | nindent 4 }}

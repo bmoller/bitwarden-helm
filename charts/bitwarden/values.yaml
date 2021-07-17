@@ -1,0 +1,62 @@
+admins:
+  - admin@example.com
+
+disableUserRegistration: true
+
+domain: bitwarden.example.com
+
+duoAkey: RANDOM_DUO_AKEY
+
+hibpApiKey: REPLACE
+
+identity:
+  certificatePassword: Password!
+  certificateSecret: bitwarden-identity
+
+installationId: 00000000-0000-0000-0000-000000000000
+
+installationKey: bitwardenKey
+
+internalIdentityKey: identityKey
+
+mail:
+  host: smtp.example.com
+  password: Password!
+  port: 587
+  replyToEmail: bitwarden@example.com
+  ssl: true
+  username: bitwarden
+
+mssql:
+  backupsVolumeSize: 1G
+  databasePassword: Password!
+  dataVolumeSize: 512M
+  podResources:
+    limits:
+      memory: 1G
+    requests:
+      memory: 512M
+
+oidcIdentityClientKey: RANDOM_IDENTITY_KEY
+
+podResources:
+  limits:
+    memory: 256M
+  requests:
+    memory: 128M
+
+storageClassName: bitwarden-storage
+
+volumeSize:
+  caCertificates: 256M
+  core: 256M
+  identity: 256M
+  logs: 256M
+
+version: 1.41.4
+
+webVersion: 2.21.0
+
+yubico:
+  clientId: notClientId
+  key: notKey

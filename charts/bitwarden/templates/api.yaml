@@ -1,0 +1,13 @@
+{{- $templateContext := list "api" . -}}
+
+{{ include "bitwarden.serviceAccount" $templateContext }}
+---
+{{- $logsClaim := dict "name" "logs" -}}
+{{- $_ := set $logsClaim "accessMode" "ReadWriteOnce" -}}
+{{- $_ := include "bitwarden.persistentVolumeClaim.size" (prepend $templateContext "logs") | set $logsClaim "size" -}}
+
+{{ prepend $templateContext $logsClaim | include "bitwarden.persistentVolumeClaim" }}
+---
+{{ include "bitwarden.deployment" $templateContext }}
+---
+{{ include "bitwarden.service" $templateContext }}

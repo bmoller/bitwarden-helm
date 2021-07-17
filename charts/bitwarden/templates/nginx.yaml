@@ -1,0 +1,19 @@
+{{- $templateContext := list "nginx" . -}}
+
+{{- $logsClaim := dict "name" "logs" -}}
+{{- $_ := set $logsClaim "accessMode" "ReadWriteOnce" -}}
+{{- $_ := include "bitwarden.persistentVolumeClaim.size" (prepend $templateContext "logs") | set $logsClaim "size" -}}
+
+{{ prepend $templateContext $logsClaim | include "bitwarden.persistentVolumeClaim" }}
+---
+{{ include "bitwarden.deployment" $templateContext }}
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  labels:
+    {{- include "bitwarden.labels.selector" $templateContext | nindent 4 }}
+  name: bitwarden-nginx
+data:
+  default.conf: |
+    {{- tpl (.Files.Get "files/default.conf.tpl") . | nindent 4 }}

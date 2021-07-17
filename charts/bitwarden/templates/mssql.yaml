@@ -1,0 +1,58 @@
+{{- $templateContext := list "mssql" . -}}
+
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    {{- include "bitwarden.labels.selector" $templateContext | nindent 4 }}
+  name: bitwarden-mssql
+type: Opaque
+data:
+  SA_PASSWORD: {{ .Values.mssql.databasePassword | b64enc }}
+---
+{{ include "bitwarden.serviceAccount" $templateContext }}
+---
+{{- $backupsClaim := dict "name" "backups" -}}
+{{- $_ := set $backupsClaim "accessMode" "ReadWriteOnce" -}}
+{{- $_ := set $backupsClaim "size" .Values.mssql.backupsVolumeSize -}}
+
+{{ prepend $templateContext $backupsClaim | include "bitwarden.persistentVolumeClaim" }}
+---
+{{- $dataClaim := dict "name" "data" -}}
+{{- $_ := set $dataClaim "accessMode" "ReadWriteOnce" -}}
+{{- $_ := set $dataClaim "size" .Values.mssql.dataVolumeSize -}}
+
+{{ prepend $templateContext $dataClaim | include "bitwarden.persistentVolumeClaim" }}
+---
+{{- $logsClaim := dict "name" "logs" -}}
+{{- $_ := set $logsClaim "accessMode" "ReadWriteOnce" -}}
+{{- $_ := include "bitwarden.persistentVolumeClaim.size" (prepend $templateContext "logs") | set $logsClaim "size" -}}
+
+{{ prepend $templateContext $logsClaim | include "bitwarden.persistentVolumeClaim" }}
+---
+{{ include "bitwarden.deployment" $templateContext }}
+---
+{{ include "bitwarden.service" $templateContext }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    {{- include "bitwarden.labels.selector" $templateContext | nindent 4 }}
+  name: bitwarden-mssql
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: mssql
+      app.kubernetes.io/instance: {{ .Release.Name | quote }}
+      app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+      app.kubernetes.io/part-of: bitwarden
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: {{ .Release.Name | quote }}
+          app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+          app.kubernetes.io/part-of: bitwarden
+    ports:
+    - port: 1433

@@ -1,0 +1,13 @@
+{{- $templateContext := list "common" . -}}
+
+{{- $coreClaim := dict "name" "core" -}}
+{{- $_ := set $coreClaim "accessMode" "ReadWriteMany" -}}
+{{- $_ := set $coreClaim "size" .Values.volumeSize.core -}}
+
+{{ prepend $templateContext $coreClaim | include "bitwarden.persistentVolumeClaim" }}
+---
+{{- $caCertificatesClaim := dict "name" "ca-certificates" -}}
+{{- $_ := set $caCertificatesClaim "accessMode" "ReadWriteMany" -}}
+{{- $_ := set $caCertificatesClaim "size" .Values.volumeSize.caCertificates -}}
+
+{{ prepend $templateContext $caCertificatesClaim | include "bitwarden.persistentVolumeClaim" }}

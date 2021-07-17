@@ -1,0 +1,5 @@
+{{- $templateContext := list "attachments" . -}}
+
+{{ include "bitwarden.deployment" $templateContext }}
+---
+{{ include "bitwarden.service" $templateContext }}

@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    {{- list "common" . | include "bitwarden.labels.selector" | nindent 4 }}
+  name: bitwarden-services
+spec:
+  podSelector: &podSelector
+    matchExpressions:
+    - key: app.kubernetes.io/component
+      operator: NotIn
+      values:
+        - mssql
+    matchLabels:
+      app.kubernetes.io/instance: {{ .Release.Name | quote }}
+      app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+      app.kubernetes.io/part-of: bitwarden
+  ingress:
+  - from:
+    - podSelector: *podSelector
+    ports:
+    - port: 5000
