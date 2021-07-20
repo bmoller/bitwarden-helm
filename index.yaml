@@ -3,6 +3,21 @@ entries:
   bitwarden:
   - apiVersion: v2
     appVersion: 1.41.4
+    created: "2021-07-20T23:53:13.175574597Z"
+    description: The Bitwarden password vault
+    digest: cc94ba37fbe791f9d3b2cb35f9c70aad51ed060d212c10eda7585caa6ddd3f94
+    home: https://bitwarden.com
+    icon: https://bitwarden.com/images/icons/favicon-32x32.png
+    maintainers:
+    - name: Brandon Moller
+      url: https://bmoller.github.io/bitwarden-helm/
+    name: bitwarden
+    type: application
+    urls:
+    - https://github.com/bmoller/bitwarden-helm/releases/download/bitwarden-1.0.1/bitwarden-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 1.41.4
     created: "2021-07-20T16:18:06.484515-06:00"
     description: The Bitwarden password vault
     digest: 19549d3e7e4cf05c3b4ecc98cc9a14ed62d8c6298d0b28cbf2042437fcd171da
@@ -16,4 +31,4 @@ entries:
     urls:
     - https://bmoller.github.io/bitwarden-helm/bitwarden-1.0.0.tgz
     version: 1.0.0
-generated: "2021-07-20T16:18:06.482429-06:00"
+generated: "2021-07-20T23:53:13.175585398Z"
