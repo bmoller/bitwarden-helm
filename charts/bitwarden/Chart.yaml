@@ -8,4 +8,4 @@ maintainers:
   url: https://bmoller.github.io/bitwarden-helm/
 name: bitwarden
 type: application
-version: 1.0.0
+version: 1.0.1

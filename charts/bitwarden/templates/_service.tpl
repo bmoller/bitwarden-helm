@@ -10,8 +10,9 @@ metadata:
   name: bitwarden-{{ $component }}
 spec:
   ports:
-  - port: {{ ternary 1433 5000 (eq $component "mssql") }}
-    targetPort: {{ ternary "mssql" "service" (eq $component "mssql") }}
+  - name: {{ get (dict "mssql" "mssql" "nginx" "http") $component | default "service" }}
+    port: {{ get (dict "mssql" 1433 "nginx" 80) $component | default 5000 }}
+    targetPort: {{ get (dict "mssql" "mssql" "nginx" "http") $component | default "service" }}
   selector:
     {{- include "bitwarden.labels.selector" . | nindent 4 }}
 {{- end -}}

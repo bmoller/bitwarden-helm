@@ -8,6 +8,8 @@
 ---
 {{ include "bitwarden.deployment" $templateContext }}
 ---
+{{ include "bitwarden.service" $templateContext }}
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:
